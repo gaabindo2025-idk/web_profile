@@ -1,0 +1,555 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyPortfolio | Dashboard</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0b1020;
+      --card: #151c30;
+      --purple: #a78bfa;
+      --blue: #67e8f9;
+      --text: #f1f5f9;
+      --muted: #9ca8bf;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .navbar {
+      width: 100%;
+      padding: 20px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #222b40;
+      background: rgba(11, 16, 32, .92);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: var(--purple);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: var(--purple);
+    }
+
+    .menu-btn {
+      display: none;
+      color: white;
+      background: transparent;
+      border: 0;
+      font-size: 25px;
+    }
+
+    .container {
+      width: 84%;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .hero {
+      min-height: 490px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 85px 0;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 270px;
+      height: 270px;
+      background: #8b5cf6;
+      filter: blur(150px);
+      opacity: .19;
+      right: 4%;
+      top: 22%;
+      pointer-events: none;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 9px 14px;
+      border: 1px solid #49366e;
+      background: #21183a;
+      color: #d8c7ff;
+      border-radius: 30px;
+      font-size: 12px;
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      line-height: 1.13;
+      max-width: 720px;
+      margin-bottom: 22px;
+      letter-spacing: -2px;
+    }
+
+    .gradient {
+      background: linear-gradient(90deg, #a78bfa, #67e8f9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .description {
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 540px;
+      font-size: 15px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 13px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 14px;
+      transition: .25s;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: #8b5cf6;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #7c3aed;
+      transform: translateY(-3px);
+    }
+
+    .btn-secondary {
+      border-color: #39445c;
+      color: white;
+      background: #151c30;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--purple);
+    }
+
+    section {
+      padding: 35px 0 75px;
+      scroll-margin-top: 85px;
+    }
+
+    .section-header {
+      margin-bottom: 25px;
+    }
+
+    .section-header h2 {
+      font-size: 27px;
+      margin-bottom: 9px;
+    }
+
+    .section-header p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .project {
+      background: var(--card);
+      border: 1px solid #252e45;
+      padding: 24px;
+      border-radius: 17px;
+      transition: .3s;
+      min-width: 0;
+    }
+
+    .project:hover {
+      transform: translateY(-5px);
+      border-color: #8b5cf6;
+    }
+
+    .project-icon {
+      width: 49px;
+      height: 49px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      font-size: 25px;
+      margin-bottom: 20px;
+      background: #292044;
+    }
+
+    .project:nth-child(2) .project-icon {
+      background: #153441;
+    }
+
+    .project:nth-child(3) .project-icon {
+      background: #3b263b;
+    }
+
+    .project h3 {
+      font-size: 17px;
+      margin-bottom: 10px;
+    }
+
+    .project p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .project a {
+      color: var(--purple);
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .about-box {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      background: var(--card);
+      padding: 28px;
+      border: 1px solid #252e45;
+      border-radius: 17px;
+    }
+
+    .avatar {
+      flex-shrink: 0;
+      width: 90px;
+      height: 90px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #8b5cf6, #164e63);
+      font-size: 42px;
+    }
+
+    .about-box h3 {
+      margin-bottom: 10px;
+    }
+
+    .about-box p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 14px;
+    }
+
+    .contact-box {
+      text-align: center;
+      background: linear-gradient(135deg, #191b39, #102330);
+      padding: 40px 20px;
+      border: 1px solid #343153;
+      border-radius: 20px;
+    }
+
+    .contact-box h2 {
+      margin-bottom: 12px;
+    }
+
+    .contact-box p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    footer {
+      padding: 25px 8%;
+      text-align: center;
+      border-top: 1px solid #222b40;
+      color: #768198;
+      font-size: 12px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .6s, transform .6s;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 750px) {
+      .navbar {
+        padding: 18px 6%;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 65px;
+        left: 0;
+        right: 0;
+        padding: 22px 6%;
+        background: #11182b;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 22px;
+        border-bottom: 1px solid #293047;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .container {
+        width: 88%;
+      }
+
+      .hero {
+        min-height: 420px;
+        padding: 70px 0;
+      }
+
+      h1 {
+        letter-spacing: -1px;
+      }
+
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-box {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <a href="#home" class="logo">My<span>Portfolio.</span></a>
+
+    <button class="menu-btn" id="menuBtn"
+      aria-label="Buka menu" aria-expanded="false">☰</button>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#projects">Projects</a>
+      <a href="#about">About Me</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <section class="hero" id="home">
+        <span class="tag">✦ WELCOME TO MY SPACE</span>
+
+        <h1>
+          Halo, aku seorang
+          <span class="gradient">Creator.</span>
+        </h1>
+
+        <p class="description">
+          Selamat datang di portofolioku! Di sini aku membagikan
+          proyek coding, eksperimen membuat game, dan karya kreatif
+          yang aku buat. Jelajahi dunia kecilku!
+        </p>
+
+        <div class="buttons">
+          <a href="#projects" class="btn btn-primary">
+            Lihat Proyek ↗
+          </a>
+          <a href="#about" class="btn btn-secondary">
+            Tentang Aku
+          </a>
+        </div>
+      </section>
+
+      <section id="projects">
+        <div class="section-header reveal">
+          <h2>Proyek <span class="gradient">Pilihan</span></h2>
+          <p>Beberapa karya yang ingin aku bagikan.</p>
+        </div>
+
+        <div class="project-grid">
+
+          <article class="project reveal">
+            <div class="project-icon">🎮</div>
+            <h3>Game Projects</h3>
+            <p>
+              Kumpulan game yang aku buat dan eksperimen
+              mekanik gameplay.
+            </p>
+            <a href="#contact">Lihat detail ↗</a>
+          </article>
+
+          <article class="project reveal">
+            <div class="project-icon">💻</div>
+            <h3>Web Development</h3>
+            <p>
+              Website, eksperimen HTML, CSS, dan JavaScript
+              buatanku.
+            </p>
+            <a href="#contact">Lihat detail ↗</a>
+          </article>
+
+          <article class="project reveal">
+            <div class="project-icon">🎨</div>
+            <h3>Creative Works</h3>
+            <p>
+              Kumpulan gambar, desain, dan ide kreatif
+              yang ingin aku tampilkan.
+            </p>
+            <a href="#contact">Lihat detail ↗</a>
+          </article>
+
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="section-header reveal">
+          <h2>Tentang <span class="gradient">Aku</span></h2>
+          <p>Kenalan sedikit dengan pemilik portofolio ini.</p>
+        </div>
+
+        <div class="about-box reveal">
+          <div class="avatar">👨‍💻</div>
+          <div>
+            <h3>Hey, welcome!</h3>
+            <p>
+              Aku seorang kreator yang suka belajar hal baru,
+              mencoba coding, membuat proyek, dan mengembangkan
+              ide menjadi sesuatu yang nyata.
+              Ini adalah tempat untuk menunjukkan hasil karyaku.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="contact-box reveal">
+          <h2>Punya ide menarik?</h2>
+          <p>
+            Terima kasih sudah mampir ke portofolioku.
+            Kamu bisa menghubungiku di saluran WhatsApp melalui tautan di bawah ini.
+          </p>
+
+          <!-- URL akunmu -->
+          <a class="btn btn-primary"
+             href="https://github.com/gaabindo2025-idk"
+             target="_blank"
+             rel="noopener noreferrer">
+            Kunjungi GitHub ↗
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    © <span id="year"></span> MyPortfolio. Dibuat dengan ✦
+  </footer>
+
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const navLinks = document.getElementById("navLinks");
+
+    menuBtn.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      menuBtn.setAttribute("aria-expanded", isOpen);
+      menuBtn.textContent = isOpen ? "✕" : "☰";
+    });
+
+    document.querySelectorAll("#navLinks a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", "false");
+        menuBtn.textContent = "☰";
+      });
+    });
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal").forEach(element => {
+      observer.observe(element);
+    });
+  </script>
+
+</body>
+</html>
