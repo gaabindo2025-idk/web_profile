@@ -1,555 +1,1058 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyPortfolio | Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyPortfolio Dashboard</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<style>
+:root {
+  --bg: #090d1b;
+  --panel: #111a2e;
+  --line: #263552;
+  --text: #f4f7ff;
+  --muted: #9ba9c4;
+  --purple: #9b7bff;
+  --cyan: #63dff2;
+}
 
-    :root {
-      --bg: #0b1020;
-      --card: #151c30;
-      --purple: #a78bfa;
-      --blue: #67e8f9;
-      --text: #f1f5f9;
-      --muted: #9ca8bf;
-    }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    html {
-      scroll-behavior: smooth;
-    }
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
 
-    body {
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
+button {
+  cursor: pointer;
+  font: inherit;
+}
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
 
-    button {
-      font: inherit;
-      cursor: pointer;
-    }
+/* SIDEBAR */
 
-    .navbar {
-      width: 100%;
-      padding: 20px 8%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #222b40;
-      background: rgba(11, 16, 32, .92);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(12px);
-    }
+.sidebar {
+  width: 245px;
+  background: #0d1426;
+  border-right: 1px solid var(--line);
+  padding: 22px 15px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
 
-    .logo {
-      font-size: 22px;
-      font-weight: bold;
-    }
+.brand {
+  font-size: 23px;
+  font-weight: bold;
+  padding: 8px 10px 25px;
+}
 
-    .logo span {
-      color: var(--purple);
-    }
+.brand span {
+  color: var(--cyan);
+}
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      color: var(--muted);
-      font-size: 14px;
-    }
+.profile {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 13px;
+  margin-bottom: 25px;
+}
 
-    .nav-links a:hover {
-      color: var(--purple);
-    }
+.profile strong {
+  font-size: 13px;
+}
 
-    .menu-btn {
-      display: none;
-      color: white;
-      background: transparent;
-      border: 0;
-      font-size: 25px;
-    }
+.profile p {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 5px;
+}
 
-    .container {
-      width: 84%;
-      max-width: 1100px;
-      margin: auto;
-    }
+.menu-title {
+  color: #71809e;
+  font-size: 10px;
+  letter-spacing: 2px;
+  padding: 0 10px 12px;
+}
 
-    .hero {
-      min-height: 490px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 85px 0;
-      position: relative;
-    }
+.nav {
+  display: grid;
+  gap: 7px;
+}
 
-    .hero::before {
-      content: "";
-      position: absolute;
-      width: 270px;
-      height: 270px;
-      background: #8b5cf6;
-      filter: blur(150px);
-      opacity: .19;
-      right: 4%;
-      top: 22%;
-      pointer-events: none;
-    }
+.nav button {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  text-align: left;
+  padding: 13px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  transition: .2s;
+}
 
-    .tag {
-      display: inline-block;
-      padding: 9px 14px;
-      border: 1px solid #49366e;
-      background: #21183a;
-      color: #d8c7ff;
-      border-radius: 30px;
-      font-size: 12px;
-      margin-bottom: 25px;
-    }
+.nav button:hover,
+.nav button.active {
+  background: #28234a;
+  color: white;
+}
 
-    h1 {
-      font-size: clamp(36px, 6vw, 64px);
-      line-height: 1.13;
-      max-width: 720px;
-      margin-bottom: 22px;
-      letter-spacing: -2px;
-    }
+.nav button.active {
+  border-left: 3px solid var(--purple);
+}
 
-    .gradient {
-      background: linear-gradient(90deg, #a78bfa, #67e8f9);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
+.sidebar-footer {
+  margin-top: auto;
+  color: #71809e;
+  font-size: 11px;
+  padding: 15px 10px;
+}
 
-    .description {
-      color: var(--muted);
-      line-height: 1.8;
-      max-width: 540px;
-      font-size: 15px;
-    }
+/* MAIN */
 
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 30px;
-    }
+main {
+  flex: 1;
+  min-width: 0;
+  padding: 0 30px 30px;
+}
 
-    .btn {
-      padding: 13px 20px;
-      border-radius: 10px;
-      font-weight: bold;
-      font-size: 14px;
-      transition: .25s;
-      border: 1px solid transparent;
-    }
+.topbar {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 25px;
+}
 
-    .btn-primary {
-      background: #8b5cf6;
-      color: white;
-    }
+.topbar h3 {
+  font-size: 14px;
+}
 
-    .btn-primary:hover {
-      background: #7c3aed;
-      transform: translateY(-3px);
-    }
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    .btn-secondary {
-      border-color: #39445c;
-      color: white;
-      background: #151c30;
-    }
+.top-actions button {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 9px;
+  padding: 9px 12px;
+}
 
-    .btn-secondary:hover {
-      border-color: var(--purple);
-    }
+.status {
+  font-size: 10px;
+  color: #9de6c0;
+}
 
-    section {
-      padding: 35px 0 75px;
-      scroll-margin-top: 85px;
-    }
+.content {
+  max-width: 1100px;
+  margin: auto;
+}
 
-    .section-header {
-      margin-bottom: 25px;
-    }
+/* PAGE SYSTEM */
 
-    .section-header h2 {
-      font-size: 27px;
-      margin-bottom: 9px;
-    }
+.page {
+  display: none;
+  animation: appear .25s ease;
+}
 
-    .section-header p {
-      color: var(--muted);
-      font-size: 14px;
-    }
+.page.active {
+  display: block;
+}
 
-    .project-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    .project {
-      background: var(--card);
-      border: 1px solid #252e45;
-      padding: 24px;
-      border-radius: 17px;
-      transition: .3s;
-      min-width: 0;
-    }
+/* COMMON */
 
-    .project:hover {
-      transform: translateY(-5px);
-      border-color: #8b5cf6;
-    }
+.page-title {
+  margin-bottom: 22px;
+}
 
-    .project-icon {
-      width: 49px;
-      height: 49px;
-      display: grid;
-      place-items: center;
-      border-radius: 13px;
-      font-size: 25px;
-      margin-bottom: 20px;
-      background: #292044;
-    }
+.page-title small {
+  color: var(--cyan);
+  letter-spacing: 2px;
+  font-size: 10px;
+}
 
-    .project:nth-child(2) .project-icon {
-      background: #153441;
-    }
+.page-title h1 {
+  font-size: 29px;
+  margin: 9px 0;
+}
 
-    .project:nth-child(3) .project-icon {
-      background: #3b263b;
-    }
+.page-title p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
 
-    .project h3 {
-      font-size: 17px;
-      margin-bottom: 10px;
-    }
+.gradient {
+  background: linear-gradient(90deg, var(--purple), var(--cyan));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
 
-    .project p {
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 13px;
-      margin-bottom: 20px;
-    }
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px;
+}
 
-    .project a {
-      color: var(--purple);
-      font-size: 13px;
-      font-weight: bold;
-    }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
 
-    .about-box {
-      display: flex;
-      align-items: center;
-      gap: 25px;
-      background: var(--card);
-      padding: 28px;
-      border: 1px solid #252e45;
-      border-radius: 17px;
-    }
+.grid-four {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
 
-    .avatar {
-      flex-shrink: 0;
-      width: 90px;
-      height: 90px;
-      border-radius: 20px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, #8b5cf6, #164e63);
-      font-size: 42px;
-    }
+.card h3 {
+  font-size: 14px;
+  margin-bottom: 9px;
+}
 
-    .about-box h3 {
-      margin-bottom: 10px;
-    }
+.card p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
 
-    .about-box p {
-      color: var(--muted);
-      line-height: 1.8;
-      font-size: 14px;
-    }
+/* HOME */
 
-    .contact-box {
-      text-align: center;
-      background: linear-gradient(135deg, #191b39, #102330);
-      padding: 40px 20px;
-      border: 1px solid #343153;
-      border-radius: 20px;
-    }
+.hero {
+  background: linear-gradient(120deg, #25204b, #123344);
+  border: 1px solid #51457b;
+  border-radius: 18px;
+  padding: 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
 
-    .contact-box h2 {
-      margin-bottom: 12px;
-    }
+.hero h1 {
+  font-size: clamp(27px, 4vw, 43px);
+  line-height: 1.2;
+  margin: 12px 0;
+}
 
-    .contact-box p {
-      color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 22px;
-    }
+.hero p {
+  color: #c0c8dc;
+  font-size: 13px;
+  line-height: 1.8;
+  max-width: 550px;
+}
 
-    footer {
-      padding: 25px 8%;
-      text-align: center;
-      border-top: 1px solid #222b40;
-      color: #768198;
-      font-size: 12px;
-    }
+.hero-icon {
+  font-size: 75px;
+}
 
-    .reveal {
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity .6s, transform .6s;
-    }
+.btn {
+  margin-top: 18px;
+  background: linear-gradient(90deg, #8058e9, #4c9dbb);
+  border: 0;
+  color: white;
+  padding: 12px 17px;
+  border-radius: 9px;
+  font-weight: bold;
+}
 
-    .reveal.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+/* STATISTICS */
 
-    @media (max-width: 750px) {
-      .navbar {
-        padding: 18px 6%;
-      }
+.stat-number {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 12px 0;
+}
 
-      .menu-btn {
-        display: block;
-      }
+.stat-label {
+  font-size: 11px;
+  color: var(--muted);
+}
 
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 65px;
-        left: 0;
-        right: 0;
-        padding: 22px 6%;
-        background: #11182b;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 22px;
-        border-bottom: 1px solid #293047;
-      }
+/* PROJECTS */
 
-      .nav-links.open {
-        display: flex;
-      }
+.project-icon {
+  background: linear-gradient(135deg, #29234d, #153d4c);
+  border-radius: 12px;
+  height: 110px;
+  display: grid;
+  place-items: center;
+  font-size: 43px;
+  margin-bottom: 15px;
+}
 
-      .container {
-        width: 88%;
-      }
+.tag {
+  display: inline-block;
+  background: #292348;
+  color: #cdbdff;
+  padding: 6px 9px;
+  border-radius: 20px;
+  font-size: 10px;
+  margin-top: 12px;
+}
 
-      .hero {
-        min-height: 420px;
-        padding: 70px 0;
-      }
+/* SKILLS */
 
-      h1 {
-        letter-spacing: -1px;
-      }
+.skill {
+  margin-bottom: 20px;
+}
 
-      .project-grid {
-        grid-template-columns: 1fr;
-      }
+.skill-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 9px;
+}
 
-      .about-box {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-    }
+.track {
+  height: 8px;
+  background: #26334d;
+  border-radius: 20px;
+  overflow: hidden;
+}
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        scroll-behavior: auto !important;
-        transition: none !important;
-      }
-    }
-  </style>
+.fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--purple), var(--cyan));
+  border-radius: 20px;
+}
+
+/* SETTINGS */
+
+.setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.setting strong {
+  font-size: 13px;
+}
+
+.setting p {
+  margin-top: 5px;
+  font-size: 11px;
+}
+
+select {
+  background: #202b43;
+  color: white;
+  border: 1px solid var(--line);
+  padding: 9px;
+  border-radius: 8px;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--purple);
+}
+
+/* LIGHT MODE */
+
+body.light {
+  --bg: #edf1fb;
+  --panel: #ffffff;
+  --line: #d5dced;
+  --text: #17213a;
+  --muted: #65718a;
+}
+
+body.light .sidebar {
+  background: #f8f9ff;
+}
+
+body.light .nav button.active,
+body.light .nav button:hover {
+  background: #e6e0ff;
+  color: #30205f;
+}
+
+body.light .top-actions button,
+body.light select {
+  color: var(--text);
+  background: white;
+}
+
+/* MOBILE */
+
+@media(max-width: 800px) {
+  .sidebar {
+    width: 190px;
+  }
+
+  main {
+    padding: 0 17px 25px;
+  }
+
+  .grid-four {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero-icon {
+    font-size: 50px;
+  }
+}
+
+@media(max-width: 550px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .brand {
+    padding: 5px 5px 12px;
+  }
+
+  .profile,
+  .menu-title,
+  .sidebar-footer {
+    display: none;
+  }
+
+  .nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 7px;
+    padding-bottom: 5px;
+  }
+
+  .nav button {
+    white-space: nowrap;
+    padding: 11px 13px;
+    border: 1px solid var(--line);
+  }
+
+  .nav button.active {
+    border-left: 1px solid var(--purple);
+    background: #28234a;
+  }
+
+  main {
+    padding: 0 14px 25px;
+  }
+
+  .topbar {
+    height: 55px;
+    margin-bottom: 20px;
+  }
+
+  .status {
+    display: none;
+  }
+
+  .hero {
+    padding: 22px;
+  }
+
+  .hero-icon {
+    font-size: 38px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-title h1 {
+    font-size: 25px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <header class="navbar">
-    <a href="#home" class="logo">My<span>Portfolio.</span></a>
+<div class="layout">
 
-    <button class="menu-btn" id="menuBtn"
-      aria-label="Buka menu" aria-expanded="false">☰</button>
+<!-- SIDEBAR MENU -->
 
-    <nav class="nav-links" id="navLinks">
-      <a href="#home">Home</a>
-      <a href="#projects">Projects</a>
-      <a href="#about">About Me</a>
-      <a href="#contact">Contact</a>
-    </nav>
+<aside class="sidebar">
+
+  <div class="brand">My<span>Portfolio.</span></div>
+
+  <div class="profile">
+    <strong>🎮 Creator Dashboard</strong>
+    <p>Game & Web Creator</p>
+  </div>
+
+  <div class="menu-title">MAIN MENU</div>
+
+  <nav class="nav">
+
+    <button class="active" data-page="home">🏠 Home</button>
+
+    <button data-page="statistics">📊 Statistics</button>
+
+    <button data-page="projects">🎮 Projects</button>
+
+    <button data-page="skills">⚡ My Skills</button>
+
+    <button data-page="journey">🕒 My Journey</button>
+
+    <button data-page="updates">✨ Updates</button>
+
+    <button data-page="about">👤 About Me</button>
+
+    <button data-page="contact">✉️ Contact</button>
+
+    <button data-page="settings">⚙️ Settings</button>
+
+  </nav>
+
+  <div class="sidebar-footer">
+    Personal Creator Dashboard<br>
+    © <span id="year"></span> MyPortfolio
+  </div>
+
+</aside>
+
+
+<!-- MAIN CONTENT -->
+
+<main>
+
+  <header class="topbar">
+    <h3 id="pageName">Home</h3>
+
+    <div class="top-actions">
+      <span class="status">● CREATOR MODE</span>
+      <button id="quickTheme">☼</button>
+    </div>
   </header>
 
-  <main>
-    <div class="container">
 
-      <section class="hero" id="home">
-        <span class="tag">✦ WELCOME TO MY SPACE</span>
+  <div class="content">
 
-        <h1>
-          Halo, aku seorang
-          <span class="gradient">Creator.</span>
-        </h1>
+    <!-- HOME PAGE -->
 
-        <p class="description">
-          Selamat datang di portofolioku! Di sini aku membagikan
-          proyek coding, eksperimen membuat game, dan karya kreatif
-          yang aku buat. Jelajahi dunia kecilku!
-        </p>
+    <section class="page active" id="home">
 
-        <div class="buttons">
-          <a href="#projects" class="btn btn-primary">
-            Lihat Proyek ↗
-          </a>
-          <a href="#about" class="btn btn-secondary">
-            Tentang Aku
-          </a>
-        </div>
-      </section>
+      <div class="hero">
+        <div>
+          <small class="gradient">WELCOME TO MY CREATIVE SPACE</small>
 
-      <section id="projects">
-        <div class="section-header reveal">
-          <h2>Proyek <span class="gradient">Pilihan</span></h2>
-          <p>Beberapa karya yang ingin aku bagikan.</p>
-        </div>
+          <h1>
+            Building Ideas,<br>
+            <span class="gradient">Creating Games.</span>
+          </h1>
 
-        <div class="project-grid">
-
-          <article class="project reveal">
-            <div class="project-icon">🎮</div>
-            <h3>Game Projects</h3>
-            <p>
-              Kumpulan game yang aku buat dan eksperimen
-              mekanik gameplay.
-            </p>
-            <a href="#contact">Lihat detail ↗</a>
-          </article>
-
-          <article class="project reveal">
-            <div class="project-icon">💻</div>
-            <h3>Web Development</h3>
-            <p>
-              Website, eksperimen HTML, CSS, dan JavaScript
-              buatanku.
-            </p>
-            <a href="#contact">Lihat detail ↗</a>
-          </article>
-
-          <article class="project reveal">
-            <div class="project-icon">🎨</div>
-            <h3>Creative Works</h3>
-            <p>
-              Kumpulan gambar, desain, dan ide kreatif
-              yang ingin aku tampilkan.
-            </p>
-            <a href="#contact">Lihat detail ↗</a>
-          </article>
-
-        </div>
-      </section>
-
-      <section id="about">
-        <div class="section-header reveal">
-          <h2>Tentang <span class="gradient">Aku</span></h2>
-          <p>Kenalan sedikit dengan pemilik portofolio ini.</p>
-        </div>
-
-        <div class="about-box reveal">
-          <div class="avatar">👨‍💻</div>
-          <div>
-            <h3>Hey, welcome!</h3>
-            <p>
-              Aku seorang kreator yang suka belajar hal baru,
-              mencoba coding, membuat proyek, dan mengembangkan
-              ide menjadi sesuatu yang nyata.
-              Ini adalah tempat untuk menunjukkan hasil karyaku.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="contact">
-        <div class="contact-box reveal">
-          <h2>Punya ide menarik?</h2>
           <p>
-            Terima kasih sudah mampir ke portofolioku.
-            Kamu bisa menghubungiku di GitHub melalui tautan di bawah ini.
+            Selamat datang di portofolioku!
+            Di sini kamu bisa melihat proyek game,
+            website, kemampuan coding, dan perjalanan kreatifku.
           </p>
 
-          <!-- URL akunmu -->
-          <a class="btn btn-primary"
-             href="https://github.com/gaabindo2025-idk"
-             target="_blank"
-             rel="noopener noreferrer">
-            Kunjungi GitHub ↗
-          </a>
+          <button class="btn" onclick="showPage('projects')">
+            Lihat Proyek →
+          </button>
         </div>
-      </section>
 
-    </div>
-  </main>
+        <div class="hero-icon">🎮</div>
+      </div>
 
-  <footer>
-    © <span id="year"></span> MyPortfolio. Dibuat dengan ✦
-  </footer>
+      <br>
 
-  <script>
-    const menuBtn = document.getElementById("menuBtn");
-    const navLinks = document.getElementById("navLinks");
+      <div class="grid-four">
 
-    menuBtn.addEventListener("click", () => {
-      const isOpen = navLinks.classList.toggle("open");
-      menuBtn.setAttribute("aria-expanded", isOpen);
-      menuBtn.textContent = isOpen ? "✕" : "☰";
-    });
+        <div class="card">
+          <div class="stat-label">TOTAL PROJECTS</div>
+          <div class="stat-number">12</div>
+          <div class="stat-label">Proyek dibuat</div>
+        </div>
 
-    document.querySelectorAll("#navLinks a").forEach(link => {
-      link.addEventListener("click", () => {
-        navLinks.classList.remove("open");
-        menuBtn.setAttribute("aria-expanded", "false");
-        menuBtn.textContent = "☰";
-      });
-    });
+        <div class="card">
+          <div class="stat-label">GAMES CREATED</div>
+          <div class="stat-number">8</div>
+          <div class="stat-label">Eksperimen game</div>
+        </div>
 
-    document.getElementById("year").textContent =
-      new Date().getFullYear();
+        <div class="card">
+          <div class="stat-label">MY SKILLS</div>
+          <div class="stat-number">5</div>
+          <div class="stat-label">Teknologi dipelajari</div>
+        </div>
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("show");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
+        <div class="card">
+          <div class="stat-label">IDEAS</div>
+          <div class="stat-number">20</div>
+          <div class="stat-label">Ide kreatif</div>
+        </div>
 
-    document.querySelectorAll(".reveal").forEach(element => {
-      observer.observe(element);
-    });
-  </script>
+      </div>
+
+    </section>
+
+
+    <!-- STATISTICS PAGE -->
+
+    <section class="page" id="statistics">
+
+      <div class="page-title">
+        <small>OVERVIEW</small>
+        <h1>Statistics <span class="gradient">Dashboard</span></h1>
+        <p>Ringkasan aktivitas dan proyek kreatifku.</p>
+      </div>
+
+      <div class="grid-four">
+
+        <div class="card">
+          <h3>📁 Total Projects</h3>
+          <div class="stat-number">12</div>
+          <p>Jumlah seluruh proyek.</p>
+        </div>
+
+        <div class="card">
+          <h3>🎮 Games Created</h3>
+          <div class="stat-number">8</div>
+          <p>Jumlah eksperimen game.</p>
+        </div>
+
+        <div class="card">
+          <h3>⚡ Skills</h3>
+          <div class="stat-number">5</div>
+          <p>Teknologi yang dipelajari.</p>
+        </div>
+
+        <div class="card">
+          <h3>💡 Ideas</h3>
+          <div class="stat-number">20</div>
+          <p>Ide kreatif.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PROJECTS PAGE -->
+
+    <section class="page" id="projects">
+
+      <div class="page-title">
+        <small>MY CREATIONS</small>
+        <h1>Project <span class="gradient">Gallery</span></h1>
+        <p>Kumpulan karya dan eksperimenku.</p>
+      </div>
+
+      <div class="grid">
+
+        <div class="card">
+          <div class="project-icon">💣</div>
+          <h3>Game Development</h3>
+          <p>Eksperimen game puzzle, arcade, dan gameplay.</p>
+          <span class="tag">GAME DEV</span>
+        </div>
+
+        <div class="card">
+          <div class="project-icon">💻</div>
+          <h3>Web Development</h3>
+          <p>Website menggunakan HTML, CSS, dan JavaScript.</p>
+          <span class="tag">WEB DEV</span>
+        </div>
+
+        <div class="card">
+          <div class="project-icon">🎨</div>
+          <h3>Creative Works</h3>
+          <p>Desain, gambar, dan berbagai ide kreatif.</p>
+          <span class="tag">CREATIVE</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SKILLS PAGE -->
+
+    <section class="page" id="skills">
+
+      <div class="page-title">
+        <small>WHAT I'M LEARNING</small>
+        <h1>My <span class="gradient">Skills</span></h1>
+        <p>Teknologi yang sedang kupelajari.</p>
+      </div>
+
+      <div class="card">
+
+        <div class="skill">
+          <div class="skill-top"><strong>HTML</strong><span>65%</span></div>
+          <div class="track"><div class="fill" style="width:65%"></div></div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-top"><strong>CSS</strong><span>55%</span></div>
+          <div class="track"><div class="fill" style="width:55%"></div></div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-top"><strong>JavaScript</strong><span>35%</span></div>
+          <div class="track"><div class="fill" style="width:35%"></div></div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-top"><strong>Python</strong><span>20%</span></div>
+          <div class="track"><div class="fill" style="width:20%"></div></div>
+        </div>
+
+        <div class="skill">
+          <div class="skill-top"><strong>Godot</strong><span>20%</span></div>
+          <div class="track"><div class="fill" style="width:20%"></div></div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- JOURNEY PAGE -->
+
+    <section class="page" id="journey">
+
+      <div class="page-title">
+        <small>MY PROGRESS</small>
+        <h1>My <span class="gradient">Journey</span></h1>
+        <p>Perjalanan belajar coding dan membuat game.</p>
+      </div>
+
+      <div class="grid">
+
+        <div class="card">
+          <h3>🚀 Step 01</h3>
+          <h3>Mulai Mengenal Coding</h3>
+          <p>Belajar HTML dan CSS untuk membuat halaman web.</p>
+        </div>
+
+        <div class="card">
+          <h3>💻 Step 02</h3>
+          <h3>Proyek Interaktif</h3>
+          <p>Mencoba JavaScript, tombol, animasi, dan game.</p>
+        </div>
+
+        <div class="card">
+          <h3>🎮 Step 03</h3>
+          <h3>Game Creator</h3>
+          <p>Mengembangkan ide game dan mencoba tools baru.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- UPDATES PAGE -->
+
+    <section class="page" id="updates">
+
+      <div class="page-title">
+        <small>WHAT'S NEW</small>
+        <h1>Recent <span class="gradient">Updates</span></h1>
+        <p>Aktivitas terbaru dalam proyekku.</p>
+      </div>
+
+      <div class="grid">
+
+        <div class="card">
+          <h3>🎮 Game Experiments</h3>
+          <p>Mencoba ide dan mekanik baru untuk game.</p>
+        </div>
+
+        <div class="card">
+          <h3>💻 Portfolio Upgrade</h3>
+          <p>Memperbarui tampilan dashboard portofolio.</p>
+        </div>
+
+        <div class="card">
+          <h3>🧩 Learning Mode</h3>
+          <p>Terus belajar coding dan pengembangan game.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ABOUT PAGE -->
+
+    <section class="page" id="about">
+
+      <div class="page-title">
+        <small>THE CREATOR</small>
+        <h1>About <span class="gradient">Me</span></h1>
+        <p>Kenalan dengan pemilik portofolio ini.</p>
+      </div>
+
+      <div class="card">
+        <h2>👨‍💻 Hey, welcome to my space!</h2>
+        <br>
+        <p>
+          Aku seorang kreator yang suka belajar hal baru,
+          mencoba coding, membuat game, dan mengembangkan ide
+          menjadi sesuatu yang nyata.
+        </p>
+      </div>
+
+    </section>
+
+
+    <!-- CONTACT PAGE -->
+
+    <section class="page" id="contact">
+
+      <div class="page-title">
+        <small>GET IN TOUCH</small>
+        <h1>Contact <span class="gradient">Me</span></h1>
+        <p>Temukan aku melalui GitHub.</p>
+      </div>
+
+      <div class="card">
+        <h2>✉️ Let's Connect!</h2>
+        <br>
+        <p>
+          Terima kasih sudah mengunjungi portofolioku.
+          Kamu bisa melihat akun dan karya codingku di GitHub.
+        </p>
+
+        <a
+          href="https://github.com/gaabindo2025-idk"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <button class="btn">Kunjungi GitHub ↗</button>
+        </a>
+      </div>
+
+    </section>
+
+
+    <!-- SETTINGS PAGE -->
+
+    <section class="page" id="settings">
+
+      <div class="page-title">
+        <small>CUSTOMIZE</small>
+        <h1>Dashboard <span class="gradient">Settings</span></h1>
+        <p>Atur tampilan dashboard-mu.</p>
+      </div>
+
+      <div class="card">
+
+        <div class="setting">
+          <div>
+            <strong>🌙 Light Mode</strong>
+            <p>Ganti tampilan gelap atau terang.</p>
+          </div>
+          <input type="checkbox" id="themeSwitch">
+        </div>
+
+        <hr style="border:0;border-top:1px solid var(--line);margin:15px 0">
+
+        <div class="setting">
+          <div>
+            <strong>🔊 Button Sound</strong>
+            <p>Aktifkan suara tombol.</p>
+          </div>
+          <input type="checkbox" id="soundSwitch">
+        </div>
+
+        <hr style="border:0;border-top:1px solid var(--line);margin:15px 0">
+
+        <div class="setting">
+          <div>
+            <strong>🎨 Accent Color</strong>
+            <p>Ubah warna utama dashboard.</p>
+          </div>
+
+          <select id="accentSelect">
+            <option value="purple">Purple</option>
+            <option value="pink">Pink</option>
+            <option value="blue">Blue</option>
+          </select>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+</div>
+
+
+<script>
+
+// PAGE NAVIGATION
+
+const menuButtons = document.querySelectorAll('.nav button');
+const pages = document.querySelectorAll('.page');
+const pageName = document.getElementById('pageName');
+
+function showPage(pageId) {
+
+  pages.forEach(page => {
+    page.classList.remove('active');
+  });
+
+  menuButtons.forEach(button => {
+    button.classList.remove('active');
+  });
+
+  const selectedPage = document.getElementById(pageId);
+  const selectedButton = document.querySelector(
+    `.nav button[data-page="${pageId}"]`
+  );
+
+  if (!selectedPage || !selectedButton) return;
+
+  selectedPage.classList.add('active');
+  selectedButton.classList.add('active');
+
+  pageName.textContent = selectedButton.textContent.trim();
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+menuButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    showPage(button.dataset.page);
+  });
+});
+
+
+// YEAR
+
+document.getElementById('year').textContent =
+  new Date().getFullYear();
+
+
+// THEME SETTINGS
+
+const themeSwitch = document.getElementById('themeSwitch');
+const quickTheme = document.getElementById('quickTheme');
+
+function setTheme(light) {
+
+  document.body.classList.toggle('light', light);
+
+  themeSwitch.checked = light;
+
+  localStorage.setItem(
+    'portfolioTheme',
+    light ? 'light' : 'dark'
+  );
+}
+
+setTheme(
+  localStorage.getItem('portfolioTheme') === 'light'
+);
+
+themeSwitch.addEventListener('change', () => {
+  setTheme(themeSwitch.checked);
+});
+
+quickTheme.addEventListener('click', () => {
+  setTheme(!document.body.classList.contains('light'));
+});
+
+
+// SOUND SETTINGS
+
+const soundSwitch = document.getElementById('soundSwitch');
+
+soundSwitch.checked =
+  localStorage.getItem('portfolioSound') === 'on';
+
+soundSwitch.addEventListener('change', () => {
+
+  localStorage.setItem(
+    'portfolioSound',
+    soundSwitch.checked ? 'on' : 'off'
+  );
+
+});
+
+
+// ACCENT COLOR
+
+const accentSelect = document.getElementById('accentSelect');
+
+const colors = {
+  purple: ['#9b7bff', '#63dff2'],
+  pink: ['#f18acb', '#a78bfa'],
+  blue: ['#5b9dff', '#63dff2']
+};
+
+function setAccent(color) {
+
+  document.documentElement.style.setProperty(
+    '--purple',
+    colors[color][0]
+  );
+
+  document.documentElement.style.setProperty(
+    '--cyan',
+    colors[color][1]
+  );
+
+  localStorage.setItem('portfolioAccent', color);
+}
+
+accentSelect.value =
+  localStorage.getItem('portfolioAccent') || 'purple';
+
+setAccent(accentSelect.value);
+
+accentSelect.addEventListener('change', () => {
+  setAccent(accentSelect.value);
+});
+
+</script>
 
 </body>
 </html>
